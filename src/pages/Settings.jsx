@@ -54,21 +54,31 @@ const Settings = () => {
         }
     }
 
+    const RenderTablePlaceholder = () => {
+        return (
+            <tr className="placeholder-glow">
+                <th>
+                    <span class="placeholder placeholder-lg col-3 rounded-1"></span>
+                </th>
+                <td>
+                    <span class="placeholder placeholder-lg col-6 rounded-1"></span>
+                </td>
+                <td>
+                    <span class="placeholder btn btn-sm btn-danger disabled col-4"></span>
+                </td>
+            </tr>
+        )
+    }
+
 
     return (
         <div className="container-fluid py-4">
             <div className="row">
                 <h2 className="text-center mb-4">Settings</h2>
                 <Sidebar />
-                <div className="col-md-6 my-4 mx-auto px-md-5">
-                    <h3 className="text-center">Leads</h3>
-                    {leadsLoading && <div className="d-flex py-4 justify-content-center">
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                    </div>}
-                    {!leadsLoading && leads?.length === 0 && <p>No leads found.</p>}
-                    {!leadsLoading && <table class="table table-striped table-hover">
+                <div className="col-md-9 my-4 mx-auto px-md-5">
+                    <h3 className="mb-3">Leads</h3>
+                    <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">S.No.</th>
@@ -77,16 +87,18 @@ const Settings = () => {
                             </tr>
                         </thead>
                         <tbody>
+                            {leadsLoading && Array.from({ length: 10 }).map((_, index) => <RenderTablePlaceholder key={index} />)}
+                            {!leadsLoading && leadsData?.length === 0 && <td colSpan={3} className="text-center"><p className="text-center py-4">No leads found.</p></td>}
+                            {leadsError && <td colSpan={3} className="text-center"><p className="text-center py-4">{leadsError}</p></td>}
                             {leads?.map((lead, index) => (
                                 <tr key={index}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{lead.name}</td>
-                                    <td><button onClick={() => handleDeleteLead(lead._id)} className="btn btn-danger">Delete</button></td>
+                                    <td><button onClick={() => handleDeleteLead(lead._id)} className="btn btn-sm btn-danger">Delete</button></td>
                                 </tr>
                             ))}
-
                         </tbody>
-                    </table>}
+                    </table>
                 </div>
             </div>
             <Toaster />

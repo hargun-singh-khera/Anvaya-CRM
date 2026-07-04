@@ -6,7 +6,7 @@ import Select from 'react-select'
 
 const LeadList = () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    
+
     const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
     // console.log("data", data)
 
@@ -69,42 +69,63 @@ const LeadList = () => {
 
     if (isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
 
+    const RenderTablePlaceholder = () => {
+        return (
+            <tr className="placeholder-glow">
+                <th>
+                    <span class="placeholder placeholder-lg col-3 rounded-1"></span>
+                </th>
+                <td>
+                    <span class="placeholder placeholder-lg col-3 rounded-1"></span>
+                </td>
+                <td>
+                    <span class="placeholder placeholder-lg col-5 rounded-1"></span>
+                </td>
+                <td>
+                    <span class="placeholder placeholder-lg col-6 rounded-1"></span>
+                </td>
+                <td>
+                    <span class="placeholder btn btn-sm btn-primary disabled col-4"></span>
+                </td>
+            </tr>
+        )
+    }
+
     return (
         <div className="container-fluid  py-4">
             <div className="row">
                 <h2 className="text-center mb-4">Lead List</h2>
                 <Sidebar />
                 <div className="col-md-8 mx-auto">
-                    {loading && <div className="d-flex justify-content-center">
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                    </div>}
-                    {!loading && filteredLeads?.length === 0 && <p>No leads found.</p>}
-                    {!loading && filteredLeads?.length > 0 && <table className="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">S.No.</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Sales Agent</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredLeads?.map((lead, index) => (
-                                <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{lead.name}</td>
-                                    <td>{lead.status}</td>
-                                    <td>{lead.salesAgent === null ? "NA" : lead.salesAgent?.name}</td>
-                                    <td>
-                                        <Link to={`/lead/list/${lead._id}`} className="btn btn-primary btn-sm">View</Link>
-                                    </td>
+                    <div class="table-responsive">
+                        <table className="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">S.No.</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Sales Agent</th>
+                                    <th scope="col">Action</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>}
+                            </thead>
+                            <tbody>
+                                {loading && Array.from({ length: 10 }).map((_, index) => <RenderTablePlaceholder key={index} />)}
+                                {!loading && filteredLeads?.length === 0 && <td colSpan={5} className="text-center"><p className="text-center py-4">No leads found.</p></td>}
+                                {error && <td colSpan={5} className="text-center"><p className="text-center py-4">{error}</p></td>}
+                                {filteredLeads?.length > 0 && filteredLeads?.map((lead, index) => (
+                                    <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{lead.name}</td>
+                                        <td>{lead.status}</td>
+                                        <td>{lead.salesAgent === null ? "NA" : lead.salesAgent?.name}</td>
+                                        <td>
+                                            <Link to={`/lead/list/${lead._id}`} className="btn btn-primary btn-sm">View</Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     <hr />
                     <div className="d-flex gap-3 align-items-center mb-3">
                         <p className="m-0">Filters: </p>
@@ -116,7 +137,6 @@ const LeadList = () => {
                     </div>
                     <div className="d-flex gap-3 align-items-center mb-3">
                         <p className="m-0">Sort by: </p>
-
                         <button onClick={() => setIsPriority(prev => !prev)} className="btn btn-outline-success">Priority</button>
                         <button onClick={() => setIsTimeToClose(prev => !prev)} className="btn btn-outline-success">Time to Close</button>
                     </div>

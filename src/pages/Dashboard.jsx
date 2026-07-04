@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import useFetch from '../useFetch'
 import { Link } from 'react-router-dom'
+import CardPlaceholder from '../components/CardPlaceholder'
+import StatsCard from '../components/StatsCard'
 
 const Dashboard = () => {
   const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
@@ -11,6 +13,13 @@ const Dashboard = () => {
   // console.log("data", data)
   const filteredLeads = status === "" ? data?.leads : data?.leads?.filter(lead => lead.status === status)
   // console.log("filteredLeads", filteredLeads)
+
+  const leadTypes = [
+    { title: "New", leads: newLeads }, 
+    { title: "Contacted", leads: contactedLeads }, 
+    { title: "Qualified", leads: qualifiedLeads }
+  ]
+
   return (
     <div className="container-fluid pt-3">
       <div className="row">
@@ -27,13 +36,10 @@ const Dashboard = () => {
         </div>
         <div className="col-md-10 px-md-5 py-5 py-md-0 d-flex flex-column">
           <div className="row">
-            {loading && <div className="d-flex py-4 justify-content-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>}
-            {filteredLeads?.length === 0 && <p>No leads found.</p>}
-            {filteredLeads?.map(lead => (
+            {loading && Array.from({ length: 6 }).map((item) => <CardPlaceholder />)}
+            {error && <p>Error while fetching leads</p>}
+            {!loading && !error && filteredLeads?.length === 0 && <p>No leads found.</p>}
+            {!loading && !error && filteredLeads?.map(lead => (
               <Link to={`/lead/list/${lead._id}`} key={lead._id} className="col-md-4 mb-3 text-decoration-none hover-cursor-pointer">
                 <div className="card border-0 shadow-sm p-2 rounded-4">
                   <div className="card-body">
@@ -55,42 +61,7 @@ const Dashboard = () => {
           <hr />
           <div>
             <div className="row">
-              <div className="col-md-4 mb-3">
-                <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
-                  <div className="card-body">
-                    <div className="card-title">
-                      <h6>New Leads</h6>
-                    </div>
-                    <div className="card-text">
-                      <h1>{newLeads?.length || 0}</h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4 mb-3">
-                <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
-                  <div className="card-body">
-                    <div className="card-title">
-                      <h6>Contacted Leads</h6>
-                    </div>
-                    <div className="card-text">
-                      <h1>{contactedLeads?.length || 0}</h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4 mb-3">
-                <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
-                  <div className="card-body">
-                    <div className="card-title">
-                      <h6>Qualified Leads</h6>
-                    </div>
-                    <div className="card-text">
-                      <h1>{qualifiedLeads?.length || 0}</h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {leadTypes.map((lead) => <StatsCard key={lead.title} title={lead.title} leads={lead.leads} />)}
             </div>
           </div>
           <hr />

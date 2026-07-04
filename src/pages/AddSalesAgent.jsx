@@ -21,6 +21,9 @@ const AddSalesAgent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (!formData.name || !formData.email) {
+            return toast.error("All fields are required")
+        }
         try {
             setLoading(true)
             const response = await fetch("https://neo-g-backend-9d5c.vercel.app/api/agents", {

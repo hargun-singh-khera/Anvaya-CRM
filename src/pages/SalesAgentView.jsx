@@ -33,7 +33,7 @@ const SalesAgentView = () => {
     ]
 
     const salesAgentOptions = salesAgentData?.salesAgent?.map(agent => ({ value: agent._id, label: agent.name }))
-    
+
     const handleSelectChange = (selectedOption, actionMeta) => {
         // console.log("selectedOption", selectedOption, "actionMeta", actionMeta)
         const value = selectedOption?.value
@@ -62,10 +62,10 @@ const SalesAgentView = () => {
     }
 
     let filteredLeads = [...(data?.leads) || []]
-    if(status) {
+    if (status) {
         filteredLeads = filteredLeads.filter(lead => lead.status === status)
     }
-    if(priority) {
+    if (priority) {
         filteredLeads = filteredLeads.filter(lead => lead.priority === priority)
     }
     if (salesAgent) {
@@ -73,6 +73,22 @@ const SalesAgentView = () => {
     }
 
     if (isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
+
+    const RenderTablePlaceholder = () => {
+        return (
+            <tr className="placeholder-glow">
+                <th>
+                    <span class="placeholder placeholder-lg col-3 rounded-1"></span>
+                </th>
+                <td>
+                    <span class="placeholder placeholder-lg col-3 rounded-1"></span>
+                </td>
+                <td>
+                    <span class="placeholder placeholder-lg col-5 rounded-1"></span>
+                </td>
+            </tr>
+        )
+    }
 
     return (
         <div className="container-fluid  py-4">
@@ -84,33 +100,28 @@ const SalesAgentView = () => {
                         <h5 className="text-nowrap">Sales Agent: </h5>
                         <Select name="salesAgent" className="w-100" value={salesAgentOptions?.find(option => option.value === salesAgent)} options={salesAgentOptions} onChange={handleSelectChange} />
                     </div>
-                    {loading && <div className="d-flex justify-content-center">
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                    </div>}
-                    {error && <p>{error}</p>}
-                    {!loading && filteredLeads?.length === 0 && <p>No leads found.</p>}
-                    {!loading && filteredLeads?.length > 0 &&
-                        <table className="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">S.No.</th>
-                                    <th scope="col">Source</th>
-                                    <th scope="col">Status</th>
+                    <table className="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">S.No.</th>
+                                <th scope="col">Source</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading && Array.from({ length: 10 }).map((_, index) => <RenderTablePlaceholder key={index} />)}
+                            {!loading && filteredLeads?.length === 0 && <td colSpan={3} className="text-center"><p className="text-center py-4">No leads found.</p></td>}
+                            {error && <td colSpan={3} className="text-center"><p className="text-center py-4">{error}</p></td>}
+                            {filteredLeads?.map((lead, index) => (
+                                <tr key={index}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{lead.name}</td>
+                                    <td>{lead.status}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {filteredLeads?.map((lead, index) => (
-                                    <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{lead.name}</td>
-                                        <td>{lead.status}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    }
+                            ))}
+                        </tbody>
+                    </table>
+
                     <hr />
                     <div className="d-flex gap-3 align-items-center mb-3">
                         <p className="m-0">Filters: </p>
