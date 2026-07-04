@@ -26,7 +26,7 @@ const Dashboard = () => {
         <h2 className="text-center mb-4">Nexora CRM Dashboard</h2>
         <div className="col-md-2">
           <div className="list-group">
-            <Link to={"/"} className="list-group-item" aria-current="true">Dashboard</Link>
+            <Link to={"/dashboard"} className="list-group-item" aria-current="true">Dashboard</Link>
             <Link to={"/leads"} className="list-group-item">Leads</Link>
             <Link to={"/sales-agent/view"} className="list-group-item">Sales</Link>
             <Link to={"/sales-agent"} className="list-group-item">Agents</Link>
