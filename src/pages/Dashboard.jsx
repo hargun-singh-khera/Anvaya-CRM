@@ -5,7 +5,7 @@ import CardPlaceholder from '../components/CardPlaceholder'
 import StatsCard from '../components/StatsCard'
 
 const Dashboard = () => {
-  const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
+  const { data, loading, error } = useFetch("http://neo-g-backend-9d5c.vercel.app/api/leads")
   const newLeads = data?.leads?.filter(lead => lead.status === "New")
   const contactedLeads = data?.leads?.filter(lead => lead.status === "Contacted")
   const qualifiedLeads = data?.leads?.filter(lead => lead.status === "Qualified")

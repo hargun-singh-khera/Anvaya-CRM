@@ -1,12 +1,9 @@
-import { useState } from 'react'
-import Dashboard from './pages/Dashboard'
+import React from 'react'
+import Login from './pages/Login'
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <Dashboard />
-    </>
+    <Login />
   )
 }
 

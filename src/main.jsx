@@ -16,11 +16,20 @@ import LeadStatusView from './pages/LeadStatusView.jsx'
 import SalesAgentView from './pages/SalesAgentView.jsx'
 import Reports from './pages/Reports.jsx'
 import Settings from './pages/Settings.jsx'
+import Signup from './pages/Signup.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />
+  },
+  {
+    path: "/signup",
+    element: <Signup />
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />
   },
   {
     path: "/lead",
