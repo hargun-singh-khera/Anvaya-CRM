@@ -25,7 +25,7 @@ const Login = () => {
         else {
             try {
                 setLoading(true)
-                const response = await fetch("http://neo-g-backend-9d5c.vercel.app/auth/login", {
+                const response = await fetch("https://neo-g-backend-9d5c.vercel.app/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
