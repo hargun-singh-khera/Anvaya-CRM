@@ -67,9 +67,9 @@ const Signup = () => {
 
     return (
         <div className='container d-flex flex-column justify-content-center align-items-center min-vh-100'>
-            <h3 style={{ color: "blueviolet"}}>Nexora</h3>
-            <h2>Create your account</h2>
-            <p>Please enter your details.</p>
+            <h3 style={{ color: "teal"}}>Nexora</h3>
+            <h2 className="fw-bold">Let's Get You Started</h2>
+            <p className="text-muted text-center text-sm" style={{ maxWidth: "320px" }}>Set up your account and begin your journey with Nexora.</p>
 
             <form onSubmit={handleSignIn} className="col-12 col-md-6 col-lg-3 mb-3">
                 <div className="mb-3">
@@ -89,7 +89,7 @@ const Signup = () => {
                         {/* </span> */}
                     </button>
                 </div>
-                <button className="btn btn-primary w-100 border-0" disabled={loading}>
+                <button style={{ backgroundColor: "teal" }} className="btn btn-primary w-100 border-0" disabled={loading}>
                     {loading && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
                     {!loading && "Create account"}
                 </button>
@@ -98,7 +98,7 @@ const Signup = () => {
             </form>
             <div className="mt-3">
                 <p>Already have an account? 
-                    <span className="ms-2 fw-semibold"><Link to={"/"} className="text-decoration-none" style={{ color: "blueviolet"}}>Sign in</Link></span>
+                    <span className="ms-2 fw-semibold"><Link to={"/"} className="text-decoration-none" style={{ color: "teal"}}>Sign in</Link></span>
                 </p>
             </div>
             <Toaster />

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import useFetch from '../useFetch'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CardPlaceholder from '../components/CardPlaceholder'
 import StatsCard from '../components/StatsCard'
+import toast, { Toaster } from 'react-hot-toast'
 
 const Dashboard = () => {
   const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
@@ -15,10 +16,18 @@ const Dashboard = () => {
   // console.log("filteredLeads", filteredLeads)
 
   const leadTypes = [
-    { title: "New", leads: newLeads }, 
-    { title: "Contacted", leads: contactedLeads }, 
+    { title: "New", leads: newLeads },
+    { title: "Contacted", leads: contactedLeads },
     { title: "Qualified", leads: qualifiedLeads }
   ]
+
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.clear()
+    navigate("/")
+    toast.success("Logout Successfully")
+  }
 
   return (
     <div className="container-fluid pt-3">
@@ -32,6 +41,10 @@ const Dashboard = () => {
             <Link to={"/sales-agent"} className="list-group-item">Agents</Link>
             <Link to={"/lead/reports"} className="list-group-item">Reports</Link>
             <Link to={"/settings"} className="list-group-item">Settings</Link>
+            <Link onClick={handleLogout} className="list-group-item text-danger">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Logout
+            </Link>
           </div>
         </div>
         <div className="col-md-10 px-md-5 py-5 py-md-0 d-flex flex-column">
@@ -88,6 +101,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }

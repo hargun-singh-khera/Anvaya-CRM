@@ -15,10 +15,10 @@ const Login = () => {
         e.preventDefault()
         // console.log("button clicked")
         // console.log("email", email, "password", password)
-        if(!email?.trim()) {
+        if (!email?.trim()) {
             toast.error("Please enter your email")
         }
-        else if(!password?.trim()) {
+        else if (!password?.trim()) {
             toast.error("Please enter your password")
         }
         // api integration
@@ -33,7 +33,7 @@ const Login = () => {
                     body: JSON.stringify({ email, password })
                 })
                 console.log("response", response)
-                if(!response.ok) {
+                if (!response.ok) {
                     throw new Error("Failed to login")
                 }
                 const data = await response.json()
@@ -54,9 +54,9 @@ const Login = () => {
 
     return (
         <div className='container d-flex flex-column justify-content-center align-items-center min-vh-100'>
-            <h3 style={{ color: "blueviolet"}}>Nexora</h3>
-            <h2>Log in to your account</h2>
-            <p>Please enter your details.</p>
+            <h3 style={{ color: "teal" }}>Nexora</h3>
+            <h2 className="fw-bold">Welcome Back!</h2>
+            <p className="text-muted">Sign in to continue to your workspace.</p>
 
             <form onSubmit={handleSignIn} className="col-12 col-md-6 col-lg-3 mb-3">
                 <div className="mb-3">
@@ -68,11 +68,11 @@ const Login = () => {
                     <input type={`${isVisible ? "text" : "password"}`} className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                     <button type="button" className="btn position-absolute bottom-0 end-0 border-0" onClick={() => setIsVisible(!isVisible)}>
                         {/* <span className="position-absolute bottom-0 end-0 me-3 pb-2" onClick={() => setIsVisible(!isVisible)}> */}
-                            {isVisible ? ( <i className="bi bi-eye"></i> ) : ( <i className="bi bi-eye-slash"></i> )}
+                        {isVisible ? (<i className="bi bi-eye"></i>) : (<i className="bi bi-eye-slash"></i>)}
                         {/* </span> */}
                     </button>
                 </div>
-                <button className="btn btn-primary w-100 border-0" disabled={loading}>
+                <button style={{ backgroundColor: "teal" }} className="btn btn-primary w-100 border-0" disabled={loading}>
                     {loading && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
                     {!loading && "Sign in"}
                 </button>
@@ -80,8 +80,8 @@ const Login = () => {
                 {/* <button type="button" className="btn btn-outline-primary w-100">Sign in with Google</button> */}
             </form>
             <div className="mt-3">
-                <p>Don't have an account? 
-                    <span className="ms-2 fw-semibold"><Link to={"/signup"} className="text-decoration-none" style={{ color: "blueviolet"}}>Sign up</Link></span>
+                <p>Don't have an account?
+                    <span className="ms-2 fw-semibold"><Link to={"/signup"} className="text-decoration-none" style={{ color: "teal" }}>Sign up</Link></span>
                 </p>
             </div>
             <Toaster />
